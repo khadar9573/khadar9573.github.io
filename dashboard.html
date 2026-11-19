@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Dashboards | Syed Khadarvali</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#fff;--card:#f3f5f9;--text:#12151c;--muted:#5a6172;--accent:#0b5fff;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0c0f15;--card:#171c27;--text:#eef0f5;--muted:#9aa3b5;--accent:#6ea1ff;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Arial,sans-serif}
+main{max-width:1100px;margin:auto;padding:24px 16px}.sub{color:var(--muted)}
+.tabs button{background:var(--card);color:var(--text);border:2px solid var(--card);padding:10px 20px;border-radius:30px;cursor:pointer;margin-right:8px;font-size:1rem}
+.tabs button.on{border-color:var(--accent);color:var(--accent);font-weight:700}
+.kpis,.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:14px}
+.grid{grid-template-columns:repeat(auto-fit,minmax(400px,1fr))}
+.card{background:var(--card);border-radius:12px;padding:16px;min-width:0}
+.kpi b{display:block;font-size:1.6rem;color:var(--accent)}
+.note{margin-top:14px}
+canvas{max-height:300px}.hide{display:none}
+@media(max-width:480px){.grid{grid-template-columns:1fr}}
+</style></head><body><main>
+<h1>Project Dashboards</h1>
+<p class="sub">Real results from my two analysis projects (Python + SQL).</p>
+<div class="tabs"><button class="on" id="b1">Online Retail</button><button id="b2">Used Cars India</button></div>
+
+<div id="p1">
+<div class="kpis">
+<div class="card kpi"><span class="sub">Revenue</span><b>£10.0M</b></div>
+<div class="card kpi"><span class="sub">Orders</span><b>19,771</b></div>
+<div class="card kpi"><span class="sub">Known customers</span><b>4,333</b></div>
+<div class="card kpi"><span class="sub">Avg order value</span><b>£506</b></div>
+<div class="card kpi"><span class="sub">Returns (of sales)</span><b>2.3%</b></div>
+</div>
+<div class="grid">
+<div class="card"><h3>Monthly revenue (£)</h3><canvas id="a1"></canvas></div>
+<div class="card"><h3>Revenue by customer segment (£)</h3><canvas id="a2"></canvas></div>
+<div class="card"><h3>Top 10 products by revenue (£)</h3><canvas id="a3"></canvas></div>
+<div class="card"><h3>Top 6 countries by revenue (£)</h3><canvas id="a4"></canvas></div>
+</div>
+<div class="card note"><b>Key insights</b><ul>
+<li>Sep–Nov 2011 gave 37.5% of total revenue. December looks low only because data stops on 9 Dec.</li>
+<li>Top 20% of customers bring 74% of revenue. Champions are 24% of customers and 67% of revenue.</li>
+<li>384 "At Risk" customers (7.5% of revenue) bought often before but stopped. Contact them first.</li>
+<li>UK is 85% of revenue. Top 10 products are only 8%, so sales are spread out.</li></ul></div>
+</div>
+
+<div id="p2" class="hide">
+<div class="kpis">
+<div class="card kpi"><span class="sub">Listings analysed</span><b>15,229</b></div>
+<div class="card kpi"><span class="sub">Median price</span><b>₹5.56 lakh</b></div>
+<div class="card kpi"><span class="sub">Median age</span><b>6 years</b></div>
+<div class="card kpi"><span class="sub">Value lost per year</span><b>~11%</b></div>
+</div>
+<div class="grid">
+<div class="card"><h3>Slowest and fastest value loss (% per year)</h3><canvas id="b1c"></canvas></div>
+<div class="card"><h3>Price gap: raw vs same model (x times)</h3><canvas id="b2c"></canvas></div>
+<div class="card"><h3>Link with price (correlation)</h3><canvas id="b3c"></canvas></div>
+</div>
+<div class="card note"><b>Key insights</b><ul>
+<li>Cars lose about 11% of value per year, from 4.9% (Maruti Celerio) to 16.3% (Mercedes E-Class).</li>
+<li>Automatic cars look 2.1x pricier, but only about 1.4x for the same model.</li>
+<li>Diesel shows no clear premium for the same model (about 0.97x).</li>
+<li>Engine power matters most for price (0.72). Kilometres matter little (-0.17).</li>
+<li>Limit: these are asking prices, not final sale prices.</li></ul></div>
+</div>
+</main>
+<script>
+const cs=getComputedStyle(document.body);Chart.defaults.color=cs.color;
+const A='#0b5fff',C=['#0b5fff','#00a67e','#f5a623','#e5484d','#8e8ea0','#7c5cff'];
+const mk=(id,type,l,d,o)=>new Chart(document.getElementById(id),{type,data:{labels:l,datasets:[{data:d,backgroundColor:type==='bar'&&!(o&&o.multi)?A:C,borderColor:A}]},options:Object.assign({plugins:{legend:{display:type==='doughnut'}}},o||{})});
+mk('a1','line',['Dec 10','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec 11*'],[775572,593178,507783,689708,515355,739914,737559,688145,724197,1028314,1103311,1452113,446018]);
+mk('a2','doughnut',['Champions','Loyal','At Risk','Lost','New','Need Attention'],[5669319,1082377,638035,600858,252168,248817]);
+mk('a3','bar',['Regency Cakestand','White Hanging Heart','Party Bunting','Jumbo Bag Red','Rabbit Night Light','Paper Chain Kit','Bird Ornament','Chilli Lights','Picnic Basket','Popcorn Holder'],[174157, 104463, 99445, 94160, 66870, 64876, 58928, 54096, 51409, 51334],{indexAxis:'y'});
+mk('a4','bar',['UK','Netherlands','EIRE','Germany','France','Australia'],[8478392,283889,270851,205381,184493,138104],{indexAxis:'y'});
+let done=false;
+function car(){if(done)return;done=true;
+mk('b1c','bar',['Celerio','Eeco','Vitara','BMW 5','C-Class','E-Class'],[4.9,6.8,7.3,15.1,15.8,16.3]);
+new Chart(document.getElementById('b2c'),{type:'bar',data:{labels:['Automatic vs Manual','Diesel vs Petrol','Dealer vs Individual'],datasets:[{label:'Raw',data:[2.1,1.52,1.16],backgroundColor:'#8e8ea0'},{label:'Same model',data:[1.42,0.97,1.04],backgroundColor:A}]}});
+mk('b3c','bar',['Engine power','Engine size','Kilometres','Age'],[0.72,0.64,-0.17,-0.48]);}
+const t=(a,b)=>{document.getElementById('p1').classList.toggle('hide',a!=1);document.getElementById('p2').classList.toggle('hide',a!=2);
+document.getElementById('b1').classList.toggle('on',a==1);document.getElementById('b2').classList.toggle('on',a==2);if(a==2)car()};
+document.getElementById('b1').onclick=()=>t(1);document.getElementById('b2').onclick=()=>t(2);
+</script></body></html>
