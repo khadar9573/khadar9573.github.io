@@ -1,13 +1,8 @@
 # Syed Khadarvali - Data Analyst Portfolio (khadar9573.github.io)
 
-Personal portfolio website with two data analysis projects and a dashboard.
+- `index.html`: the whole portfolio, including the interactive dashboards. The dashboard data is built into this one file, so nothing else is needed for the site to work.
+- `profile.jpg`: profile photo
+- `dashboard_retail.png`, `dashboard_cars.png`: dashboard pictures (for LinkedIn and GitHub)
+- `prepare_dashboard_data.py`: optional. Rebuilds the dashboard data from the project notebook outputs and stops with an error if the totals do not match. The same data can be downloaded from the "Data and method" box on the page.
 
-- **Online Retail Sales Analysis** (Python, SQL, Pandas): 541,909 records, 4,333 customers, RFM segments.
-- **Used Cars India Price Analysis** (Python, SQL, Pandas): 15,411 listings, about 11% value loss per year.
-
-Open `index.html` to view the portfolio. `dashboard.html` is the standalone dashboard page.
-
-![Online Retail Dashboard](dashboard_retail.png)
-![Used Cars Dashboard](dashboard_cars.png)
-
-Contact: khadara007@gmail.com | [LinkedIn](https://www.linkedin.com/in/syed-khadarvali-9a914b328)
+Projects: [online-retail-analysis](https://github.com/khadar9573/online-retail-analysis) | [used-car-price-analysis](https://github.com/khadar9573/used-car-price-analysis)
